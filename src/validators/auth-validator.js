@@ -10,7 +10,12 @@ const registerSchema = Joi.object({
   .trim()
   .required(),
   confirmPassword : Joi.string().valid(Joi.ref('password')).trim().required().strip(),
-  role:Joi.string()
+  role:Joi.string(),
+  address:Joi.string().trim(),
+  subdistrict:Joi.string().trim(),
+  district:Joi.string().trim(),
+  province:Joi.string().trim(),
+  postcode:Joi.string().trim().pattern(/^[0-9]{5}$/)
 });
 
 exports.registerSchema = registerSchema
