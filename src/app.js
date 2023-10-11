@@ -15,6 +15,7 @@ app.use(morgan('dev'));
 app.use(rateLimitMiddleware);
 app.use(express.json());
 
+// app.use()
 app.use('/auth',authRoute)
 app.use('/user',userRoute)
 
