@@ -27,3 +27,10 @@ const loginSchema = Joi.object({
 })
 
 exports.loginSchema = loginSchema
+
+
+const checkUserIdSchema = Joi.object({
+  userId:Joi.number().integer().required().positive()
+})
+
+exports.checkUserIdSchema =checkUserIdSchema
