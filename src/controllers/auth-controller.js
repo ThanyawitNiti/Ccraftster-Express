@@ -2,7 +2,8 @@ const { registerSchema, loginSchema } = require("../validators/auth-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const prisma = require("../models/prisma");
-const createError =require('../utils/create-error')
+const createError =require('../utils/create-error');
+const { boolean } = require("joi");
 
 exports.register = async (req, res, next) => {
   try {
@@ -33,12 +34,12 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { value, error } = loginSchema.validate(req.body);
-    console.log(value)
+    console.log(`value from Schema ${value}`)
     if (error) {
       return next(error);
     }
 
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
          email: value.email 
       }
@@ -58,8 +59,10 @@ exports.login = async (req, res, next) => {
         { expiresIn: process.env.JWT_EXPIRE }
       ); 
       delete user.password
+      console.log(`test ${user.first_name}`)
+
       res.status(200).json({ accessToken ,user });
-  
+
   } catch (err) {
     next(err);
   }
@@ -67,5 +70,6 @@ exports.login = async (req, res, next) => {
 
 exports.getMe = (req,res,next) =>{
   res.status(200).json({ user : req.user})
+  
 
 }
