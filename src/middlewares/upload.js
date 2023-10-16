@@ -5,8 +5,8 @@ const  storage = multer.diskStorage(
     {
         
         destination: (req,file,cb)=>{
-            console.log(destination)
-            cb(null,'./multerfile')
+            // console.log(destination)
+            cb(null,'multerfile')
             console.log('test')
         }, 
 
