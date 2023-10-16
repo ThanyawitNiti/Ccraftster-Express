@@ -2,6 +2,7 @@ const { upload } = require("../utils/cloudinary-service");
 const createError = require("../utils/create-error");
 const prisma = require("../models/prisma");
 const { json } = require("express");
+const { checkProductIdSchema } = require("../validators/product-validator");
 
 exports.createItem = async (req, res, next) => {
   // console.log(req.body)
@@ -39,14 +40,39 @@ exports.createItem = async (req, res, next) => {
 };
 
 exports.getAllItem = async (req, res, next) => {
-  console.log("asdasd");
   try {
-    const products = await prisma.product.findMany({
-     
-    });
+    const products = await prisma.product.findMany({});
 
-    console.log(products);
-    res.status(200).json(products);
+    res.status(200).json({ products });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteProduct = async (req, res, next) => {
+  try {
+    const { value, error } = checkProductIdSchema.validate(req.params);
+    console.log(value)
+    if (error) {
+      return next(error);
+    }
+    const deleteProduct = await prisma.product.findFirst({
+        where :{
+            id: value.productId
+        }
+    })
+    if(!deleteProduct){
+        return next(createError("Sorry does not have this item ID", 400));
+    }
+    console.log(deleteProduct)
+
+   const test = await prisma.product.delete({
+        where:{
+            id:deleteProduct.id
+        }
+    })
+    console.log(test)
+    res.status(200).json({Message: 'Delete'})
   } catch (err) {
     next(err);
   }

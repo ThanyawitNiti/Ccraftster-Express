@@ -10,5 +10,5 @@ router.post('/',adminAuthenticate,uploadMdw.single("img_url"),adminController.cr
 )
 router.get('/item',adminAuthenticate,adminController.getAllItem)
 
-// /item/
+router.delete('/:productId',adminAuthenticate,adminController.deleteProduct)
 module.exports = router
