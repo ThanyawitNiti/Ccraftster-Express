@@ -8,5 +8,7 @@ const router = express.Router()
 
 router.post('/',adminAuthenticate,uploadMdw.single("img_url"),adminController.createItem
 )
+router.get('/item',adminAuthenticate,adminController.getAllItem)
 
+// /item/
 module.exports = router
