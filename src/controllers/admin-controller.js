@@ -1,12 +1,15 @@
+const fs =require('fs/promises')
 const { upload } = require("../utils/cloudinary-service");
 const createError = require("../utils/create-error");
 const prisma = require("../models/prisma");
-const { json } = require("express");
 const { checkProductIdSchema } = require("../validators/product-validator");
 
+
 exports.createItem = async (req, res, next) => {
-  // console.log(req.body)
-  // console.log(req.file)
+  console.log(req.body)
+  
+  console.log(req.file)
+
   try {
     const { product_name, price, category } = req.body;
     if (
@@ -34,8 +37,12 @@ exports.createItem = async (req, res, next) => {
     });
     res.status(200).json({ message: "Prodcut added", addItem });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     next(err);
+  } finally{
+    if(req.file){
+      fs.unlink(req.file.path)
+    }
   }
 };
 
@@ -66,13 +73,12 @@ exports.deleteProduct = async (req, res, next) => {
     }
     console.log(deleteProduct)
 
-   const test = await prisma.product.delete({
+   await prisma.product.delete({
         where:{
             id:deleteProduct.id
         }
     })
-    console.log(test)
-    res.status(200).json({Message: 'Delete'})
+    res.status(200).json({Message: 'Product Deleted'})
   } catch (err) {
     next(err);
   }

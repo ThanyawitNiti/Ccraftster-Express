@@ -5,7 +5,6 @@ const  storage = multer.diskStorage(
     {
         
         destination: (req,file,cb)=>{
-            // console.log(destination)
             cb(null,'multerfile')
             console.log('test')
         }, 
@@ -13,7 +12,6 @@ const  storage = multer.diskStorage(
         filename:(req,file,cb) => {
 
             cb(null,Date.now() + '-' + file.originalname)
-            // console.log(filename)
             // const split = file.originalname.split('.')
             // cb(null,
             // '' +
@@ -27,7 +25,7 @@ const  storage = multer.diskStorage(
     
         
 ) 
-const upload =multer({ storage:storage,limits: { fileSize: 1024*1024*5 }, })
+const upload =multer({ storage:storage })
 
 module.exports = upload
 
