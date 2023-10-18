@@ -33,10 +33,10 @@ exports.addItem = (req, res, next) => {
   }
 };
 
-exports.addItemForAdmin = async (req,res,next)=>{
-    try{
-        console.log('this is for admin')
-    }catch(err){
-        console.log(err)
-    }
-}
+// exports.addItemForAdmin = async (req,res,next)=>{
+//     try{
+//         console.log('this is for admin')
+//     }catch(err){
+//         console.log(err)
+//     }
+// }

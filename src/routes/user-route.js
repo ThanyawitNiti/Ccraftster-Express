@@ -6,6 +6,7 @@ const authenticateMiddleware = require('../middlewares/authenticate')
 const router = express.Router()
 
 router.get('/product',userController.getAllItem)
+router.post('/cart/addItem',authenticateMiddleware,userController.addItem)
 
 
 

@@ -52,6 +52,7 @@ model Product {
 model Cart {
   id         Int     @id @default(autoincrement())
   user_id    Int
+  amount     Int
   user       User    @relation(fields: [user_id], references: [id])
   product_id Int
   product    Product @relation(fields: [product_id], references: [id])
