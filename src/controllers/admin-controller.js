@@ -22,13 +22,10 @@ exports.createItem = async (req, res, next) => {
     const adminAddItem = {};
 
     if (product_name && price && category && req.file) {
-      console.log("If is work!");
       adminAddItem.product_name = product_name;
       adminAddItem.price = price;
       adminAddItem.category = category;
       adminAddItem.img_url = await upload(req.file.path);
-      // console.log(req.file.path)
-      // console.log(adminAddItem);
     }
     const addItem = await prisma.product.create({
       data: adminAddItem,

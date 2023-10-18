@@ -5,8 +5,12 @@ const authenticateMiddleware = require('../middlewares/authenticate')
 
 const router = express.Router()
 
-router.post('/:userId',authenticateMiddleware,userController.addItem)
-router.post('/:userId',authenticateMiddleware,userController.addItemForAdmin)
+router.get('/product',userController.getAllItem)
+
+
+
+// router.post('/:userId',authenticateMiddleware,userController.addItem)
+// router.post('/:userId',authenticateMiddleware,userController.addItemForAdmin)
 
 
 module.exports = router

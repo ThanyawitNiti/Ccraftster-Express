@@ -4,6 +4,18 @@ const prisma = require("../models/prisma");
 
 const { checkUserIdSchema } = require("../validators/auth-validator");
 
+
+exports.getAllItem = async (req, res, next) => {
+  try {
+    const showProducts = await prisma.product.findMany({});
+
+    res.status(200).json({ showProducts });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 exports.addItem = (req, res, next) => {
   try {
     const {value,error} = checkUserIdSchema.validate(req.params)
