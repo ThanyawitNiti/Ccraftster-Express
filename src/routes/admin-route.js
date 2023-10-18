@@ -6,8 +6,8 @@ const adminController = require('../controllers/admin-controller')
 
 const router = express.Router()
 
-router.post('/',adminAuthenticate,uploadMdw.single("img_url"),adminController.createItem
-)
+router.post('/',adminAuthenticate,uploadMdw.single("img_url"),adminController.createItem)
+
 router.get('/item',adminAuthenticate,adminController.getAllItem)
 
 router.delete('/:productId',adminAuthenticate,adminController.deleteProduct)

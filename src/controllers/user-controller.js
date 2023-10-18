@@ -4,7 +4,6 @@ const prisma = require("../models/prisma");
 
 const { checkUserIdSchema } = require("../validators/auth-validator");
 
-
 exports.getAllItem = async (req, res, next) => {
   try {
     const showProducts = await prisma.product.findMany({});
@@ -15,28 +14,46 @@ exports.getAllItem = async (req, res, next) => {
   }
 };
 
-
-exports.addItem = (req, res, next) => {
+exports.addItemToCart = async (req, res, next) => {
   try {
-    const {value,error} = checkUserIdSchema.validate(req.params)
-    console.log(`This is from validate: ${value.userId}`)
-    if(error){
-        return next(error)
+    const { id } = req.user;
+    const product_id = +req.body.id;
+    const {amount} =req.body
+    const oldproduct = await prisma.cart.findFirst({
+      where:{
+        product_id,
+        user_id:id
+      }
+    
+    });
+    // const test =oldproduct.find((el)=> el.product_id == product_id && el.user_id == id)
+
+    if (oldproduct) {
+
+      await prisma.cart.updateMany({
+        data: {
+          user_id:id,
+          product_id :product_id,
+          amount:oldproduct.amount+1
+          
+        },
+        where: {
+          id:oldproduct.id
+        },
+      });
+    } else {
+      await prisma.cart.create({
+        data: {
+          user_id: id,
+          product_id: product_id,
+          amount: 1,
+        },
+      });
     }
-    if(value.userId === value.userId ){
-        next('route')
-    }else{
-        res.status(200).json({message:'ok'})
-    }
+   
+    res.status(200).json({ message: "ok" });
   } catch (err) {
     console.log(err);
   }
 };
 
-// exports.addItemForAdmin = async (req,res,next)=>{
-//     try{
-//         console.log('this is for admin')
-//     }catch(err){
-//         console.log(err)
-//     }
-// }
