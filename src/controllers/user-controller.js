@@ -58,7 +58,8 @@ exports.showItemInCart = async (req, res, next) => {
   try {
     const { img_url, product_name, price, amount } = req.body;
     const { id } = req.user;
-
+    console.log(id)
+    console.log(id)
     const showItemToUser = await prisma.cart.findMany({
       where: {
         user_id: id,
