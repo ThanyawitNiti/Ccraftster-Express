@@ -18,27 +18,24 @@ exports.addItemToCart = async (req, res, next) => {
   try {
     const { id } = req.user;
     const product_id = +req.body.id;
-    const {amount} =req.body
+    const { amount } = req.body;
     const oldproduct = await prisma.cart.findFirst({
-      where:{
+      where: {
         product_id,
-        user_id:id
-      }
-    
+        user_id: id,
+      },
     });
     // const test =oldproduct.find((el)=> el.product_id == product_id && el.user_id == id)
 
     if (oldproduct) {
-
       await prisma.cart.updateMany({
         data: {
-          user_id:id,
-          product_id :product_id,
-          amount:oldproduct.amount+1
-          
+          user_id: id,
+          product_id: product_id,
+          amount: oldproduct.amount + 1,
         },
         where: {
-          id:oldproduct.id
+          id: oldproduct.id,
         },
       });
     } else {
@@ -50,10 +47,35 @@ exports.addItemToCart = async (req, res, next) => {
         },
       });
     }
-   
+
     res.status(200).json({ message: "ok" });
   } catch (err) {
     console.log(err);
   }
 };
 
+exports.showItemInCart = async (req, res, next) => {
+  try {
+    const { img_url, product_name, price, amount } = req.body;
+    const { id } = req.user;
+
+    const showItemToUser = await prisma.cart.findMany({
+      where: {
+        user_id: id,
+      },
+      include: {
+        product: {
+          select: {
+            img_url: true,
+            product_name: true,
+            price: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json( {showItemToUser} );
+  } catch (err) {
+    console.log(err);
+  }
+};

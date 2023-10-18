@@ -9,6 +9,10 @@ router.get('/product',userController.getAllItem)
 
 router.post('/cart',authenticateMiddleware,userController.addItemToCart)
 
+router.get('/cartpage',authenticateMiddleware,userController.showItemInCart)
+
+
+
 
 
 // router.post('/:userId',authenticateMiddleware,userController.addItem)
