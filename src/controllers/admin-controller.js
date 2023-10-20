@@ -64,7 +64,7 @@ exports.deleteProduct = async (req, res, next) => {
       },
     });
     if (!deleteProduct) {
-      return next(createError("Sorry does not have this item ID", 400));
+      return next(createError("Sorry do not have this item ID", 400));
     }
     console.log(deleteProduct);
 
@@ -73,6 +73,7 @@ exports.deleteProduct = async (req, res, next) => {
         id: deleteProduct.id,
       },
     });
+    
     res.status(200).json({ Message: "Product Deleted" });
   } catch (err) {
     next(err);
@@ -95,11 +96,13 @@ exports.editProduct = async (req, res, next) => {
     }
 
     const { product_name, price, category } = req.body;
+    
     if (product_name || price || category) {
       editProduct.product_name = product_name;
       editProduct.price = price;
       editProduct.category = category;
     }
+    
     if(req.file){
       editProduct.img_url = await upload(req.file.path);
     }

@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const notFoundMiddleware = require('./middlewares/not-found');
 const errorMiddleware = require('./middlewares/error');
 const rateLimitMiddleware = require('./middlewares/rate-limit');
+const sharingRoute = require('./routes/sharing-route')
 const authRoute = require('./routes/auth-route')
 const userRoute = require('./routes/user-route')
 const adminRoute = require('./routes/admin-route')
@@ -17,6 +18,7 @@ app.use(rateLimitMiddleware);
 app.use(express.json());
 
 // app.use()
+app.use('/',sharingRoute)
 app.use('/auth',authRoute)
 app.use('/admin',adminRoute)
 

@@ -3,6 +3,7 @@ const createError = require("../utils/create-error");
 const prisma = require("../models/prisma");
 
 const { checkUserIdSchema } = require("../validators/auth-validator");
+const { checkProductIdSchema } = require("../validators/product-validator");
 
 exports.getAllItem = async (req, res, next) => {
   try {
@@ -18,6 +19,7 @@ exports.addItemToCart = async (req, res, next) => {
   try {
     const { id } = req.user;
     const product_id = +req.body.id;
+    console.log(req.body)
     const { amount } = req.body;
     const oldproduct = await prisma.cart.findFirst({
       where: {
@@ -26,7 +28,7 @@ exports.addItemToCart = async (req, res, next) => {
       },
     });
     // const test =oldproduct.find((el)=> el.product_id == product_id && el.user_id == id)
-
+    console.log(oldproduct)
     if (oldproduct) {
       await prisma.cart.updateMany({
         data: {
@@ -56,10 +58,9 @@ exports.addItemToCart = async (req, res, next) => {
 
 exports.showItemInCart = async (req, res, next) => {
   try {
-    const { img_url, product_name, price, amount } = req.body;
+    // const { img_url, product_name, price, amount } = req.body;
     const { id } = req.user;
-    console.log(id)
-    console.log(id)
+
     const showItemToUser = await prisma.cart.findMany({
       where: {
         user_id: id,
@@ -80,3 +81,13 @@ exports.showItemInCart = async (req, res, next) => {
     console.log(err);
   }
 };
+
+exports.deleteItemInCart = async (req,res,next) =>{
+try{
+  const {value , error} =checkProductIdSchema.validate(req.params)
+  console.log(value)
+res.status(200).json({message:"ok"})
+}catch(err){
+  console.log(err)
+}
+}

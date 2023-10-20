@@ -11,12 +11,9 @@ router.post('/cart',authenticateMiddleware,userController.addItemToCart)
 
 router.get('/cartpage',authenticateMiddleware,userController.showItemInCart)
 
+router.delete('/cartpage/:product_id',authenticateMiddleware,userController.deleteItemInCart)
 
 
-
-
-// router.post('/:userId',authenticateMiddleware,userController.addItem)
-// router.post('/:userId',authenticateMiddleware,userController.addItemForAdmin)
 
 
 module.exports = router
