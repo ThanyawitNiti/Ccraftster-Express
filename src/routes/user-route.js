@@ -8,6 +8,7 @@ const router = express.Router()
 router.get('/product',userController.getAllItem)
 
 router.post('/cart',authenticateMiddleware,userController.addItemToCart)
+router.delete('/cart/:product_id',authenticateMiddleware,userController.deleteItemInCart)
 
 router.get('/cartpage',authenticateMiddleware,userController.showItemInCart)
 

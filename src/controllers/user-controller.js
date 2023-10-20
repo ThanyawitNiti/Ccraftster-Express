@@ -84,8 +84,39 @@ exports.showItemInCart = async (req, res, next) => {
 
 exports.deleteItemInCart = async (req,res,next) =>{
 try{
-  const {value , error} =checkProductIdSchema.validate(req.params)
+  // const {id} =req.user
+  const { value, error } = checkProductIdSchema.validate(req.params);
+  console.log(`##fsadfsdfdfsdff ${value.amount}`)
+
+
   console.log(value)
+  console.log(req.user.id)
+  console.log(`xxxxxxxxxxxxxxxxxxxxxxxxx ${value.product_id}`)
+  // const product_id = req.params
+  console.log(`########### ${req.params}`)
+  const oldproductde = await prisma.cart.findFirst({
+    where:{
+      product_id:+value.product_id,
+      user_id:req.user.id
+    }
+  })
+  if(oldproductde){
+    await prisma.cart.updateMany({
+      data:{
+        user_id:req.user.id,
+        product_id:+value.product_id,
+        amount : oldproductde.amount-1
+      },
+      where:{
+        id:oldproductde.id
+      }
+    })
+    console.log(oldproductde)
+  }else {
+    return next(createError('Have no ID',401))
+  }
+
+  if(oldproductde.amount === 0)
 res.status(200).json({message:"ok"})
 }catch(err){
   console.log(err)
