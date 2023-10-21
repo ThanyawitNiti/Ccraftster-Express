@@ -21,8 +21,8 @@ app.use(express.json());
 app.use('/',sharingRoute)
 app.use('/auth',authRoute)
 app.use('/admin',adminRoute)
-
 app.use('/user',userRoute)
+
 
 
 

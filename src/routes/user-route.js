@@ -8,11 +8,11 @@ const router = express.Router()
 router.get('/product',userController.getAllItem)
 
 router.post('/cart',authenticateMiddleware,userController.addItemToCart)
-router.delete('/cart/:product_id',authenticateMiddleware,userController.deleteItemInCart)
+router.delete('/cart/:product_id',authenticateMiddleware,userController.decreaseItemInCart)
 
 router.get('/cartpage',authenticateMiddleware,userController.showItemInCart)
 
-router.delete('/cartpage/:product_id',authenticateMiddleware,userController.deleteItemInCart)
+router.delete('/itemincartpage/:productId',authenticateMiddleware,userController.deleteItemInCartPage)
 
 
 

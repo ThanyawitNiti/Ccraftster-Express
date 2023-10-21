@@ -82,7 +82,7 @@ exports.showItemInCart = async (req, res, next) => {
   }
 };
 
-exports.deleteItemInCart = async (req,res,next) =>{
+exports.decreaseItemInCart = async (req,res,next) =>{
 try{
   // const {id} =req.user
   const { value, error } = checkProductIdSchema.validate(req.params);
@@ -116,9 +116,42 @@ try{
     return next(createError('Have no ID',401))
   }
 
-  if(oldproductde.amount === 0)
 res.status(200).json({message:"ok"})
 }catch(err){
   console.log(err)
 }
+}
+
+exports.deleteItemInCartPage = async (req,res,next)=>{
+  try{
+    const {id} = req.user
+    const {value ,error} = checkProductIdSchema.validate(req.params);
+    console.log(req.params)
+    console.log(value.productId)
+    if (error) {
+      return next(error);
+    }
+    const deleteItemInCartPage = await prisma.cart.findFirst({
+      where:{
+        user_id:id,
+        product_id:value.productId
+      }
+      
+    })
+    if(!deleteItemInCartPage){
+      return next(createError("Sorry do not have this item ID", 400));
+    }
+
+    console.log(deleteItemInCartPage)
+    await prisma.cart.delete({
+      where:{
+        id :deleteItemInCartPage.id,
+        user_id:id,
+        product_id:value.productId
+      }
+    })
+    res.status(200).json({ Message: "ItemInCartPage Deleted" })
+  }catch(err){
+    console.log(err)
+  }
 }
