@@ -10,6 +10,7 @@ const sharingRoute = require('./routes/sharing-route')
 const authRoute = require('./routes/auth-route')
 const userRoute = require('./routes/user-route')
 const adminRoute = require('./routes/admin-route')
+const orderRoute = require('./routes/order-route')
 const app = express()
 
 app.use(cors());
@@ -22,6 +23,7 @@ app.use('/',sharingRoute)
 app.use('/auth',authRoute)
 app.use('/admin',adminRoute)
 app.use('/user',userRoute)
+app.use('/order',orderRoute)
 
 
 
