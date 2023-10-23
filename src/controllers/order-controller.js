@@ -74,10 +74,21 @@ const orderProductTable = []
                             payment_status:false
                         }
                     })
+                    
+                    console.log("####",statusPayment)
+
+                    const statusPaymentTrue = await prisma.order.findMany({
+                      where:{
+                          user_id:id,
+                          payment_status:true
+                      }
+                  })
+
+                  console.log(statusPaymentTrue)
             
                 res.status(200).json({
                     message:"Status Payment"
-                    ,statusPayment
+                    ,statusPayment,statusPaymentTrue
                 })
                 }catch(err){
                     next(err)
@@ -101,7 +112,8 @@ exports.slipPayment = async (req,res,next)=>{
             id:+id
           },
             data:{
-              slipImg:slipImg
+              slipImg:slipImg,
+              payment_status:true
             }
         })
         res.status(200).json({message :" Slip Added" , addSlip})
