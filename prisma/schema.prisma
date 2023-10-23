@@ -75,5 +75,6 @@ model Order {
   updated_at     DateTime       @updatedAt
   total_price    String
   payment_status Boolean        @default(false)
+  slipImg        String?
   OrderProduct   OrderProduct[]
 }

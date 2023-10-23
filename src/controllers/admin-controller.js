@@ -6,7 +6,6 @@ const { checkProductIdSchema } = require("../validators/product-validator");
 
 exports.createItem = async (req, res, next) => {
   console.log(req.body);
-  console.log(req.file);
 
   try {
     const { product_name, price, category } = req.body;
@@ -32,7 +31,6 @@ exports.createItem = async (req, res, next) => {
     });
     res.status(200).json({ message: "Prodcut added", addItem });
   } catch (err) {
-    // console.log(err);
     next(err);
   } finally {
     if (req.file) {

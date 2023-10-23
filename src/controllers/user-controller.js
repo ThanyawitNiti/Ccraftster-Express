@@ -52,7 +52,7 @@ exports.addItemToCart = async (req, res, next) => {
 
     res.status(200).json({ message: "ok" });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
@@ -78,7 +78,7 @@ exports.showItemInCart = async (req, res, next) => {
 
     res.status(200).json( {showItemToUser} );
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
@@ -118,7 +118,7 @@ try{
 
 res.status(200).json({message:"ok"})
 }catch(err){
-  console.log(err)
+  next(err)
 }
 }
 
@@ -152,6 +152,6 @@ exports.deleteItemInCartPage = async (req,res,next)=>{
     })
     res.status(200).json({ Message: "ItemInCartPage Deleted" })
   }catch(err){
-    console.log(err)
+    next(err)
   }
 }

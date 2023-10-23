@@ -1,20 +1,21 @@
 const { defaults } = require("joi");
+const fs = require('fs/promises')
 const prisma = require("../models/prisma");
+const { json } = require("express");
+const { upload } = require("../utils/cloudinary-service");
 
 exports.createOrder = async (req, res, next) => {
   try {
-    console.log("####", req.body);
     const user_id = req.body.map((el) => {
       return el.user_id;
     });
     const indexUserId = 1;
-    console.log(user_id);
     const orderTotal = req.body.reduce((acc, item) => {
       let total = item.amount * item.product.price;
       acc += total;
       return acc;
     }, 0);
-    console.log(orderTotal);
+
     const orderFromUser = await prisma.order.create({
       data: {
         user_id: user_id[indexUserId],
@@ -22,12 +23,7 @@ exports.createOrder = async (req, res, next) => {
         payment_status: false,
       },
     });
-    console.log(orderFromUser);
-    console.log("###ID###", orderFromUser.id);
-    // const quantity = req.body.map((el)=>{
-    //     return el.amount
-    // })
-    // console.log(quantity)
+
 const orderProductTable = []
 
     for (const reqBody of req.body) {
@@ -51,8 +47,69 @@ const orderProductTable = []
     }
   console.log(orderProductTable)
 
-    res.status(200).json({ message: "Order table created" });
+    res.status(200).json({ message: "Order table created",orderFromUser,orderProductTable });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
+
+
+
+//  exports.deleteCart = async (req,res,next) =>{
+//     try{
+//           res.status(200).json({message:'ok'})
+//       }catch(err){
+//                    next(err)
+//             }
+// }
+            
+
+ exports.getStatus = async (req,res,next)=>{
+                try{
+                    const {id} = req.user
+            
+                    const statusPayment = await prisma.order.findMany({
+                        where:{
+                            user_id:id,
+                            payment_status:false
+                        }
+                    })
+            
+                res.status(200).json({
+                    message:"Status Payment"
+                    ,statusPayment
+                })
+                }catch(err){
+                    next(err)
+                }
+            }
+exports.slipPayment = async (req,res,next)=>{
+    try{
+      const {id} = req.body
+        if(!req.file)
+        {
+            return next(createError("Informations are required", 400));
+          }
+
+          
+        if(req.file){
+            slipImg = await upload(req.file.path)
+        }
+
+        const addSlip = await prisma.order.update({
+          where:{
+            id:+id
+          },
+            data:{
+              slipImg:slipImg
+            }
+        })
+        res.status(200).json({message :" Slip Added" , addSlip})
+    }catch(err){
+        next(err)
+    }finally {
+        if (req.file) {
+          fs.unlink(req.file.path);
+        }
+      }
+}
