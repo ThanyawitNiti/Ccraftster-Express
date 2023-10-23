@@ -66,7 +66,7 @@ exports.deleteProduct = async (req, res, next) => {
     if (!deleteProduct) {
       return next(createError("Sorry do not have this item ID", 400));
     }
-    console.log(deleteProduct);
+  
 
     await prisma.product.delete({
       where: {
