@@ -19,7 +19,7 @@ exports.addItemToCart = async (req, res, next) => {
   try {
     const { id } = req.user;
     const product_id = +req.body.id;
-    console.log(req.body)
+
     const { amount } = req.body;
     const oldproduct = await prisma.cart.findFirst({
       where: {
@@ -27,7 +27,7 @@ exports.addItemToCart = async (req, res, next) => {
         user_id: id,
       },
     });
-    // const test =oldproduct.find((el)=> el.product_id == product_id && el.user_id == id)
+   
     console.log(oldproduct)
     if (oldproduct) {
       await prisma.cart.updateMany({

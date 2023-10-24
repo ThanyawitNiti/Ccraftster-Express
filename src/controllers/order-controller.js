@@ -3,29 +3,30 @@ const fs = require('fs/promises')
 const prisma = require("../models/prisma");
 const { json } = require("express");
 const { upload } = require("../utils/cloudinary-service");
+const createError =require("../utils/create-error")
 
 exports.createOrder = async (req, res, next) => {
   try {
+    console.log(req.body)
     const user_id = req.body.map((el) => {
       return el.user_id;
     });
-    const indexUserId = 1;
+    const indexUserId = 0;
     const orderTotal = req.body.reduce((acc, item) => {
       let total = item.amount * item.product.price;
       acc += total;
       return acc;
     }, 0);
-
+    console.log(user_id)
     const orderFromUser = await prisma.order.create({
       data: {
-        user_id: user_id[indexUserId],
+        user_id: +user_id[indexUserId],
         total_price: orderTotal.toString(),
         payment_status: false,
       },
     });
-
 const orderProductTable = []
-
+console.log('55555555555555555555555555555555555')
     for (const reqBody of req.body) {
       const { id,user_id, amount, product_id } = reqBody;
       const orderProduct = await prisma.orderProduct.create({
@@ -33,12 +34,12 @@ const orderProductTable = []
           quantity: amount.toString(),
           product:{
             connect:{
-                id: product_id,
+                id: +product_id,
             }
           },
           order:{
             connect:{
-                id:orderFromUser.id
+                id:+orderFromUser.id
             }
           },
         },
@@ -66,6 +67,7 @@ const orderProductTable = []
 
  exports.getStatus = async (req,res,next)=>{
                 try{
+                  console.log('GET STATUS')
                     const {id} = req.user
             
                     const statusPayment = await prisma.order.findMany({
@@ -75,7 +77,7 @@ const orderProductTable = []
                         }
                     })
                     
-                    console.log("####",statusPayment)
+                  
 
                     const statusPaymentTrue = await prisma.order.findMany({
                       where:{
@@ -96,7 +98,9 @@ const orderProductTable = []
             }
 exports.slipPayment = async (req,res,next)=>{
     try{
+      console.log('sadas')
       const {id} = req.body
+      
         if(!req.file)
         {
             return next(createError("Informations are required", 400));
