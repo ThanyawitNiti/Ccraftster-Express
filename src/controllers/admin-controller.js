@@ -125,3 +125,29 @@ exports.editProduct = async (req, res, next) => {
     }
   }
 };
+
+exports.getStatusFromUser = async (req, res, next) => {
+  try {
+    console.log("GET STATUS From User");
+    const { id } = req.user;
+
+    const statusPayment = await prisma.order.findMany({
+      where: {
+        payment_status: false,
+      },
+      include:{
+        user:true
+      }
+      
+    });
+
+  
+    res.status(200).json({
+      message: "Status Payment From User",
+      statusPayment,
+      
+    });
+  } catch (err) {
+    next(err);
+  }
+};

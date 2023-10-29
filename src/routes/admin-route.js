@@ -14,7 +14,7 @@ router.delete('/:productId',adminAuthenticate,adminController.deleteProduct)
 
 router.patch('/:productId',adminAuthenticate,uploadMdw.single("img_url"),adminController.editProduct)
 
-
+router.get('/status',adminAuthenticate,adminController.getStatusFromUser)
 
 module.exports = router
 
