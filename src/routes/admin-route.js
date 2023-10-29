@@ -16,5 +16,7 @@ router.patch('/:productId',adminAuthenticate,uploadMdw.single("img_url"),adminCo
 
 router.get('/status',adminAuthenticate,adminController.getStatusFromUser)
 
+router.patch('/status/:id',adminAuthenticate,adminController.updateStatus)
+
 module.exports = router
 

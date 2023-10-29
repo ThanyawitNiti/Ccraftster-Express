@@ -151,3 +151,32 @@ exports.getStatusFromUser = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.updateStatus = async (req,res,next)=>{
+  try {
+    const { id } = req.params;
+    console.log(id)
+
+    // if (!req.file) {
+    //   return next(createError("Informations are required", 400));
+    // }
+
+    // if (req.file) {
+    //   slipImg = await upload(req.file.path);
+    // }
+
+    const addSlip = await prisma.order.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        // slipImg: slipImg,
+        payment_status: true,
+      },
+    });
+    res.status(200).json({ message: " Slip Added", addSlip });
+  } catch (err) {
+    next(err);
+  }
+}
+
