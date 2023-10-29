@@ -111,7 +111,7 @@ exports.slipPayment = async (req, res, next) => {
       },
       data: {
         slipImg: slipImg,
-        payment_status: true,
+        // payment_status: true,
       },
     });
     res.status(200).json({ message: " Slip Added", addSlip });
