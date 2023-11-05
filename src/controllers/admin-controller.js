@@ -159,6 +159,9 @@ exports.getStatusFromUser = async (req, res, next) => {
             payment_status: false
           }
         ]
+      },
+      include:{
+        user:true
       }
     })
 
