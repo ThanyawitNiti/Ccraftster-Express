@@ -149,12 +149,25 @@ exports.getStatusFromUser = async (req, res, next) => {
         user:true
       }
     })
+    const findAllStatusPayment = await prisma.order.findMany({
+      where:{
+        OR:[
+          {
+            payment_status: true
+          },
+          {
+            payment_status: false
+          }
+        ]
+      }
+    })
 
   
     res.status(200).json({
       message: "Status Payment From User",
       statusPayment,
-      getApprovePaymentTrue
+      getApprovePaymentTrue,
+      findAllStatusPayment
       
     });
   } catch (err) {
