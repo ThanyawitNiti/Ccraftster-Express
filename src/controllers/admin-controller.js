@@ -141,10 +141,20 @@ exports.getStatusFromUser = async (req, res, next) => {
       
     });
 
+    const getApprovePaymentTrue = await prisma.order.findMany({
+      where: {
+        payment_status: true,
+      },
+      include:{
+        user:true
+      }
+    })
+
   
     res.status(200).json({
       message: "Status Payment From User",
       statusPayment,
+      getApprovePaymentTrue
       
     });
   } catch (err) {
@@ -157,13 +167,6 @@ exports.updateStatus = async (req,res,next)=>{
     const { id } = req.params;
     console.log(id)
 
-    // if (!req.file) {
-    //   return next(createError("Informations are required", 400));
-    // }
-
-    // if (req.file) {
-    //   slipImg = await upload(req.file.path);
-    // }
 
     const addSlip = await prisma.order.update({
       where: {
@@ -174,6 +177,7 @@ exports.updateStatus = async (req,res,next)=>{
         payment_status: true,
       },
     });
+    console.log(addSlip)
     res.status(200).json({ message: " Slip Added", addSlip });
   } catch (err) {
     next(err);
