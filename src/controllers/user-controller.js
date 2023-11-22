@@ -75,8 +75,15 @@ exports.showItemInCart = async (req, res, next) => {
         },
       },
     });
+    
+  const grandTotal = showItemToUser.reduce((acc, item) => {
+    let total = item.amount * item.product.price;
+    acc += total;
+    return acc;
+  }, 0);
+  console.log(grandTotal)
 
-    res.status(200).json( {showItemToUser} );
+    res.status(200).json( {showItemToUser, grandTotal} );
   } catch (err) {
     next(err);
   }
